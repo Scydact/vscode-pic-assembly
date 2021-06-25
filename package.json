@@ -1,0 +1,30 @@
+{
+    "name": "pic-assembly",
+    "displayName": "PIC Assembly",
+    "description": "VScode adaptation of kjetilos' PIC Assembly syntax hightlight.",
+    "version": "0.0.1",
+    "publisher": "scydact",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Scydact/vscode-pic-assembly.git"
+    },
+    "engines": {
+        "vscode": "^1.53.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "pic-assembly",
+            "aliases": ["PIC Assembly", "pic-assembly"],
+            "extensions": [".asm"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "pic-assembly",
+            "scopeName": "source.assembly",
+            "path": "./syntaxes/assembly.json"
+        }]
+    }
+}
