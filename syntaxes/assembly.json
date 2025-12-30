@@ -276,7 +276,7 @@
             }
         },
         "expression-zero": {
-            "match": "^(?i)\\s*([\\w]+\\s+)?(end|clrw|nop|clrwdt|retfie|return|sleep)",
+            "match": "^(?i)\\s*([\\w]+\\s+)?(end|clrw|nop|clrwdt|retfie|return|sleep|clrc|clrdc|setdc|clrz|setz)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -295,7 +295,7 @@
             }
         },
         "expression-one": {
-            "match": "^(?i)\\s*([\\w]+\\s+)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)",
+            "match": "^(?i)\\s*([\\w]+\\s+)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw|skpc|skpnc|skpdc|skpndc|skpz|skpnz|tstf|movfw|b|bc|bnc|bdc|bndc|bz|bnz|lcall)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -324,7 +324,7 @@
             }
         },
         "expression-two": {
-            "match": "^(?i)\\s*([\\w]+\\s+)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)\\s*,\\s*([0-9a-zA-Z_\\?\\'\\\"]+)",
+            "match": "^(?i)\\s*([\\w]+\\s+)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss|negf|addcf|subcf|adddcf|subdcf)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)\\s*,\\s*([0-9a-zA-Z_\\?\\'\\\"]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -401,19 +401,19 @@
         },
         "validOpcode": {
             "name": "keyword.operator",
-            "match": "\\b(?i)(v)?(addwf|andwf|clrf|clrw|comf|decf|decfsz|incf|incfsz|iorwf|movf|movwf|nop|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btfsc|btfss|addlw|andlw|call|clrwdt|goto|iorlw|movlw|retfie|retlw|return|sleep|sublw|xorlw)\\b"
+            "match": "\\b(?i)(v)?(addwf|andwf|clrf|clrw|comf|decf|decfsz|incf|incfsz|iorwf|movf|movwf|nop|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btfsc|btfss|addlw|andlw|call|clrwdt|goto|iorlw|movlw|retfie|retlw|return|sleep|sublw|xorlw|clrc|clrdc|setdc|clrz|setz|skpc|skpnc|skpdc|skpndc|skpz|skpnz|tstf|movfw|b|bc|bnc|bdc|bndc|bz|bnz|lcall|negf|addcf|subcf|adddcf|subdcf)\\b"
         },
         "opcodeNone": {
             "name": "keyword.operator",
-            "match": "\\b(?i)(v)?(clrw|nop|clrwdt|retfie|return|sleep)\\b"
+            "match": "\\b(?i)(v)?(clrw|nop|clrwdt|retfie|return|sleep|clrc|clrdc|setdc|clrz|setz)\\b"
         },
         "opcodeSingle": {
             "name": "keyword.operator",
-            "match": "\\b(?i)(v)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw)\\b"
+            "match": "\\b(?i)(v)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw|skpc|skpnc|skpdc|skpndc|skpz|skpnz|tstf|movfw|b|bc|bnc|bdc|bndc|bz|bnz|lcall)\\b"
         },
         "opcodeDouble": {
             "name": "keyword.operator",
-            "match": "\\b(?i)(v)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss)\\b"
+            "match": "\\b(?i)(v)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss|negf|addcf|subcf|adddcf|subdcf)\\b"
         },
         "opcodeSimulator": {
             "name": "keyword.operator",
