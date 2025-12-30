@@ -76,7 +76,7 @@
                     "name": "support.function.directive.assembly"
                 },
                 {
-                    "match": "(,|\\[|\\]|\\+|\\-|\\*)",
+                    "match": "(,|\\[|\\]|\\+|\\-|\\*|\\||&|\\^|~|<<|>>|<|>)",
                     "name": "source.assembly"
                 },
                 {
@@ -229,7 +229,7 @@
             ]
         },
         "expressionEquivalence": {
-            "match": "^(?i)\\s*(\\w+)\\s+(equ)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)",
+            "match": "^(?i)\\s*(\\w+)\\s+(equ)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*]+)",
             "captures": {
                 "1": {
                     "name": "storage.type"
@@ -247,6 +247,9 @@
                             "include": "#constant"
                         },
                         {
+                            "include": "#label-expression"
+                        },
+                        {
                             "include": "#label"
                         }
                     ]
@@ -254,7 +257,7 @@
             }
         },
         "expressionDirective": {
-            "match": "^(?i)\\s*(org|code)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)",
+            "match": "^(?i)\\s*(org|code)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -267,6 +270,9 @@
                     "patterns": [
                         {
                             "include": "#constant"
+                        },
+                        {
+                            "include": "#label-expression"
                         },
                         {
                             "include": "#label"
@@ -295,7 +301,7 @@
             }
         },
         "expression-one": {
-            "match": "^(?i)\\s*([\\w]+\\s+)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw|skpc|skpnc|skpdc|skpndc|skpz|skpnz|tstf|movfw|b|bc|bnc|bdc|bndc|bz|bnz|lcall)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)",
+            "match": "^(?i)\\s*([\\w]+\\s+)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw|skpc|skpnc|skpdc|skpndc|skpz|skpnz|tstf|movfw|b|bc|bnc|bdc|bndc|bz|bnz|lcall)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -317,6 +323,9 @@
                             "include": "#constant"
                         },
                         {
+                            "include": "#label-expression"
+                        },
+                        {
                             "include": "#label"
                         }
                     ]
@@ -324,7 +333,7 @@
             }
         },
         "expression-two": {
-            "match": "^(?i)\\s*([\\w]+\\s+)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss|negf|addcf|subcf|adddcf|subdcf)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)\\s*,\\s*([0-9a-zA-Z_\\?\\'\\\"]+)",
+            "match": "^(?i)\\s*([\\w]+\\s+)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss|negf|addcf|subcf|adddcf|subdcf)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*]+)\\s*,\\s*([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -344,6 +353,9 @@
                     "patterns": [
                         {
                             "include": "#constant"
+                        },
+                        {
+                            "include": "#label-expression"
                         },
                         {
                             "include": "#label"
@@ -354,6 +366,9 @@
                     "patterns": [
                         {
                             "include": "#constant"
+                        },
+                        {
+                            "include": "#label-expression"
                         },
                         {
                             "include": "#label"
@@ -371,6 +386,10 @@
                     "name": "invalid.illegal"
                 }
             ]
+        },
+        "label-expression": {
+            "name": "storage.type",
+            "match": "\\b[a-zA-Z0-9_\\-]+(?:[\\|&\\^~<>\\+\\-\\*]+[a-zA-Z0-9_\\-]+)*\\b"
         },
         "label": {
             "name": "storage.type",
