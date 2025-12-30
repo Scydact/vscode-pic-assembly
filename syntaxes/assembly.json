@@ -229,7 +229,7 @@
             ]
         },
         "expressionEquivalence": {
-            "match": "^(?i)\\s*(\\w+)\\s+(equ)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*]+)",
+            "match": "^(?i)\\s*(\\w+)\\s+(equ)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*\\(\\)]+)",
             "captures": {
                 "1": {
                     "name": "storage.type"
@@ -257,7 +257,7 @@
             }
         },
         "expressionDirective": {
-            "match": "^(?i)\\s*(org|code)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*]+)",
+            "match": "^(?i)\\s*(org|code)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*\\(\\)]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -301,7 +301,7 @@
             }
         },
         "expression-one": {
-            "match": "^(?i)\\s*([\\w]+\\s+)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw|skpc|skpnc|skpdc|skpndc|skpz|skpnz|tstf|movfw|b|bc|bnc|bdc|bndc|bz|bnz|lcall)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*]+)",
+            "match": "^(?i)\\s*([\\w]+\\s+)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw|skpc|skpnc|skpdc|skpndc|skpz|skpnz|tstf|movfw|b|bc|bnc|bdc|bndc|bz|bnz|lcall)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*\\(\\)]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -333,7 +333,7 @@
             }
         },
         "expression-two": {
-            "match": "^(?i)\\s*([\\w]+\\s+)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss|negf|addcf|subcf|adddcf|subdcf)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*]+)\\s*,\\s*([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*]+)",
+            "match": "^(?i)\\s*([\\w]+\\s+)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss|negf|addcf|subcf|adddcf|subdcf)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*\\(\\)]+)\\s*,\\s*([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*\\(\\)]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -388,8 +388,23 @@
             ]
         },
         "label-expression": {
-            "name": "storage.type",
-            "match": "\\b[a-zA-Z0-9_\\-]+(?:[\\|&\\^~<>\\+\\-\\*]+[a-zA-Z0-9_\\-]+)*\\b"
+            "patterns": [
+                {
+                    "match": "\\b(LOW|HIGH)\\(([a-zA-Z_][a-zA-Z0-9_]*)\\)",
+                    "captures": {
+                        "1": {
+                            "name": "keyword.operator"
+                        },
+                        "2": {
+                            "name": "storage.type"
+                        }
+                    }
+                },
+                {
+                    "match": "\\b[a-zA-Z0-9_\\-]+(?:[\\|&\\^~<>\\+\\-\\*]+[a-zA-Z0-9_\\-]+)*\\b",
+                    "name": "storage.type"
+                }
+            ]
         },
         "label": {
             "name": "storage.type",
