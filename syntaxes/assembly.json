@@ -72,11 +72,11 @@
                     "match": "\\s*(?i)(%define|%ifndef|%xdefine|%idefine|%undef|%assign|%defstr|%strcat|%strlen|%substr|%00|%0|%rotate|%rep|%endrep|%include|\\$\\$|\\$|%unmacro|%if|%elif|%else|%endif|%(el)?ifdef|%(el)?ifmacro|%(el)?ifctx|%(el)?ifidn|%(el)?ifidni|%(el)?ifid|%(el)?ifnum|%(el)?ifstr|%(el)?iftoken|%(el)?ifempty|%(el)?ifenv|%pathsearch|%depend|%use|%push|%pop|%repl|%arg|%stacksize|%local|%error|%warning|%fatal|%line|%!|%comment|%endcomment|__NASM_VERSION_ID__|__NASM_VER__|__FILE__|__LINE__|__BITS__|__OUTPUT_FORMAT__|__DATE__|__TIME__|__DATE_NUM__|_TIME__NUM__|__UTC_DATE__|__UTC_TIME__|__UTC_DATE_NUM__|__UTC_TIME_NUM__|__POSIX_TIME__|__PASS__|ISTRUC|AT|IEND|BITS 16|BITS 32|BITS 64|USE16|USE32|__SECT__|ABSOLUTE|EXTERN|GLOBAL|COMMON|CPU|FLOAT)\\b ?([_a-zA-Z][_a-zA-Z0-9]*)?"
                 },
                 {
-                    "match": "\\b(?i)(d(b|w|d|q|t|o|y)|res(b|w|d|q|t|o)|equ|times|align|alignb|sectalign|section|ptr|byte|word|dword|qword|incbin|)\\b",
+                    "match": "\\b(?i)(d(b|w|d|q|t|o|y|e)|res(b|w|d|q|t|o)|equ|times|align|alignb|sectalign|section|ptr|byte|word|dword|qword|incbin|)\\b",
                     "name": "support.function.directive.assembly"
                 },
                 {
-                    "match": "(,|\\[|\\]|\\+|\\-|\\*)",
+                    "match": "(,|\\[|\\]|\\+|\\-|\\*|\\||&|\\^|~|<<|>>|<|>)",
                     "name": "source.assembly"
                 },
                 {
@@ -215,6 +215,9 @@
                     "include": "#expressionEquivalence"
                 },
                 {
+                    "include": "#expressionDataDirective"
+                },
+                {
                     "include": "#expressionDirective"
                 },
                 {
@@ -229,7 +232,7 @@
             ]
         },
         "expressionEquivalence": {
-            "match": "^(?i)\\s*(\\w+)\\s+(equ)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)",
+            "match": "^(?i)\\s*(\\w+)\\s+(equ)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*\\(\\)]+)",
             "captures": {
                 "1": {
                     "name": "storage.type"
@@ -247,6 +250,40 @@
                             "include": "#constant"
                         },
                         {
+                            "include": "#label-expression"
+                        },
+                        {
+                            "include": "#label"
+                        }
+                    ]
+                }
+            }
+        },
+        "expressionDataDirective": {
+            "match": "^(?i)\\s*(de|db|dw|dd)\\s+([^;]+)",
+            "captures": {
+                "1": {
+                    "name": "support.function.directive.assembly"
+                },
+                "2": {
+                    "patterns": [
+                        {
+                            "match": "0x[0-9a-fA-F]+",
+                            "name": "constant.numeric.hex.asm"
+                        },
+                        {
+                            "match": "\\b[0-9]+\\b",
+                            "name": "constant.numeric.decimal.asm"
+                        },
+                        {
+                            "match": ",",
+                            "name": "source.assembly"
+                        },
+                        {
+                            "match": "\\s+",
+                            "name": "text"
+                        },
+                        {
                             "include": "#label"
                         }
                     ]
@@ -254,7 +291,7 @@
             }
         },
         "expressionDirective": {
-            "match": "^(?i)\\s*(org|code)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)",
+            "match": "^(?i)\\s*(org|code)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*\\(\\)]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -269,6 +306,9 @@
                             "include": "#constant"
                         },
                         {
+                            "include": "#label-expression"
+                        },
+                        {
                             "include": "#label"
                         }
                     ]
@@ -276,7 +316,7 @@
             }
         },
         "expression-zero": {
-            "match": "^(?i)\\s*([\\w]+\\s+)?(end|clrw|nop|clrwdt|retfie|return|sleep)",
+            "match": "^(?i)\\s*([\\w]+\\s+)?(end|clrw|nop|clrwdt|retfie|return|sleep|clrc|clrdc|setdc|clrz|setz)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -295,7 +335,7 @@
             }
         },
         "expression-one": {
-            "match": "^(?i)\\s*([\\w]+\\s+)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)",
+            "match": "^(?i)\\s*([\\w]+\\s+)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw|skpc|skpnc|skpdc|skpndc|skpz|skpnz|tstf|movfw|b|bc|bnc|bdc|bndc|bz|bnz|lcall)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*\\(\\)]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -317,6 +357,9 @@
                             "include": "#constant"
                         },
                         {
+                            "include": "#label-expression"
+                        },
+                        {
                             "include": "#label"
                         }
                     ]
@@ -324,7 +367,7 @@
             }
         },
         "expression-two": {
-            "match": "^(?i)\\s*([\\w]+\\s+)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss)\\s+([0-9a-zA-Z_\\?\\'\\\"]+)\\s*,\\s*([0-9a-zA-Z_\\?\\'\\\"]+)",
+            "match": "^(?i)\\s*([\\w]+\\s+)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss|negf|addcf|subcf|adddcf|subdcf)\\s+([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*\\(\\)]+)\\s*,\\s*([0-9a-zA-Z_\\?\\'\\\"\\|&\\^~<>\\+\\-\\*\\(\\)]+)",
             "captures": {
                 "1": {
                     "patterns": [
@@ -344,6 +387,9 @@
                     "patterns": [
                         {
                             "include": "#constant"
+                        },
+                        {
+                            "include": "#label-expression"
                         },
                         {
                             "include": "#label"
@@ -354,6 +400,9 @@
                     "patterns": [
                         {
                             "include": "#constant"
+                        },
+                        {
+                            "include": "#label-expression"
                         },
                         {
                             "include": "#label"
@@ -369,6 +418,25 @@
                 },
                 {
                     "name": "invalid.illegal"
+                }
+            ]
+        },
+        "label-expression": {
+            "patterns": [
+                {
+                    "match": "\\b(LOW|HIGH)\\(([a-zA-Z_][a-zA-Z0-9_]*)\\)",
+                    "captures": {
+                        "1": {
+                            "name": "keyword.operator"
+                        },
+                        "2": {
+                            "name": "storage.type"
+                        }
+                    }
+                },
+                {
+                    "match": "\\b[a-zA-Z0-9_\\-]+(?:[\\|&\\^~<>\\+\\-\\*]+[a-zA-Z0-9_\\-]+)*\\b",
+                    "name": "storage.type"
                 }
             ]
         },
@@ -401,19 +469,19 @@
         },
         "validOpcode": {
             "name": "keyword.operator",
-            "match": "\\b(?i)(v)?(addwf|andwf|clrf|clrw|comf|decf|decfsz|incf|incfsz|iorwf|movf|movwf|nop|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btfsc|btfss|addlw|andlw|call|clrwdt|goto|iorlw|movlw|retfie|retlw|return|sleep|sublw|xorlw)\\b"
+            "match": "\\b(?i)(v)?(addwf|andwf|clrf|clrw|comf|decf|decfsz|incf|incfsz|iorwf|movf|movwf|nop|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btfsc|btfss|addlw|andlw|call|clrwdt|goto|iorlw|movlw|retfie|retlw|return|sleep|sublw|xorlw|clrc|clrdc|setdc|clrz|setz|skpc|skpnc|skpdc|skpndc|skpz|skpnz|tstf|movfw|b|bc|bnc|bdc|bndc|bz|bnz|lcall|negf|addcf|subcf|adddcf|subdcf)\\b"
         },
         "opcodeNone": {
             "name": "keyword.operator",
-            "match": "\\b(?i)(v)?(clrw|nop|clrwdt|retfie|return|sleep)\\b"
+            "match": "\\b(?i)(v)?(clrw|nop|clrwdt|retfie|return|sleep|clrc|clrdc|setdc|clrz|setz)\\b"
         },
         "opcodeSingle": {
             "name": "keyword.operator",
-            "match": "\\b(?i)(v)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw)\\b"
+            "match": "\\b(?i)(v)?(clrf|movwf|addlw|andlw|call|goto|iorlw|movlw|retlw|sublw|xorlw|skpc|skpnc|skpdc|skpndc|skpz|skpnz|tstf|movfw|b|bc|bnc|bdc|bndc|bz|bnz|lcall)\\b"
         },
         "opcodeDouble": {
             "name": "keyword.operator",
-            "match": "\\b(?i)(v)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss)\\b"
+            "match": "\\b(?i)(v)?(addwf|andwf|comf|decf|decfsz|incf|incfsz|iorwf|movf|rlf|rrf|subwf|swapf|xorwf|bcf|bsf|btf|btfsc|btfss|negf|addcf|subcf|adddcf|subdcf)\\b"
         },
         "opcodeSimulator": {
             "name": "keyword.operator",

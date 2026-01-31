@@ -3,6 +3,8 @@ This is a VSCODE adaptation of [kjetilos' PIC Assembly sintax highlight for subl
 
 # Features (?)
 - Syntax highlight for all 35 instructions.
+- Syntax highlight for pseudo mnemonics supported by MPASM and GPASM (CLRC, SKPC, TSTF, NEGF, BC, etc.).
+- Support for bitwise operators (|, &, ^, ~, <<, >>, <, >).
 - Simple error detection (syntax based, no language server yet).
 
 # TODO
